@@ -14,6 +14,11 @@ app.use(cookieParser());
 app.use(cors());
 const userRoute = require("./routes/userRoutes");
 const productRoute = require("./routes/productRoutes");
+const orderRoute = require("./routes/orderRoutes");
+const cartRoute = require("./routes/cartRoutes");
 app.use("/api", userRoute);
 app.use("/api", productRoute);
+app.use("/api", orderRoute);
+
+app.use("/api", cartRoute);
 module.exports = app;

@@ -1,5 +1,3 @@
-import { find } from "../models/orderModel";
-
 const ErrorHandler = require("../utils/errorHandler");
 const orderModel = require("../models/orderModel");
 const catchAsyncError = require("../middleware/catchAsyncError");
@@ -15,7 +13,10 @@ const createNewOrder = catchAsyncError(async (req, res, next) => {
     taxPrice,
     shippingPrice,
     totalPrice,
+    user,
+    product,
   } = req.body;
+
   const order = await orderModel.create({
     shippingInfo,
     orderItems,
@@ -25,7 +26,8 @@ const createNewOrder = catchAsyncError(async (req, res, next) => {
     shippingPrice,
     totalPrice,
     paidAt: Date.now(),
-    user: req.user._id,
+    user: user,
+    product: product,
   });
   res.status(200).json({
     success: true,
@@ -48,10 +50,13 @@ const getSingleOrder = catchAsyncError(async (req, res, next) => {
 });
 //current user order
 const getCurrentUserOrder = catchAsyncError(async (req, res, next) => {
-  const order = await find(req.user._id);
+  console.log("product");
+  const order = await orderModel.find();
+  console.log(order);
   res.status(200).json({
     success: true,
     order,
   });
 });
-export { createNewOrder, getSingleOrder, getCurrentUserOrder };
+
+module.exports = { createNewOrder, getSingleOrder, getCurrentUserOrder };
